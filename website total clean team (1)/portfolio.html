@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfólió — Thury Group Kft.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F5F5F4;
+    --brand: #294D7B;
+    --muted: #888888;
+    --ink: #292929;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .serif { font-family: 'Newsreader', 'Times New Roman', serif; font-weight: 500; }
+
+  /* Fixed background image (matches the Gépbérlés page) */
+  .bg-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .bg-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .bg-tint {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: rgba(245, 245, 244, 0.18);
+  }
+
+  /* Nav — transparent so the background image shows through */
+  .nav-outer {
+    position: relative;
+    z-index: 50;
+    background: transparent;
+    border-bottom: none;
+  }
+  .nav {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    gap: 2rem;
+  }
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--ink);
+    padding: 0.3rem 1.1rem 0.3rem 0.35rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(41, 41, 41, 0.06);
+  }
+  .brand-mark img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+  .brand-mark .wordmark {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .brand-mark .wordmark sup {
+    font-size: 0.55em;
+    font-family: 'Inter', sans-serif;
+    vertical-align: super;
+    color: var(--ink);
+    margin-left: 2px;
+  }
+  .menu {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #ffffff;
+    border: 1px solid rgba(41, 41, 41, 0.08);
+    border-radius: 999px;
+    padding: 0.35rem;
+    box-shadow: 0 1px 2px rgba(41, 41, 41, 0.04);
+  }
+  .menu .item > a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    transition: color 220ms ease, background-color 220ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+  }
+  .menu .item > a:hover,
+  .menu .item.active > a {
+    background: var(--brand);
+    color: #ffffff;
+  }
+
+  .menu .item > button {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    padding: 0.55rem 1.1rem;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: color 220ms ease, background-color 220ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+  }
+  .menu .item > button:hover,
+  .menu .item.open > button { background: var(--brand); color: #ffffff; }
+  .menu .item > button .chev { width: 11px; height: 11px; transition: transform 200ms ease; }
+  .menu .item.open > button .chev { transform: rotate(180deg); }
+
+  /* Contact dropdown */
+  .menu .item { position: relative; }
+  .contact-panel {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: -16px;
+    width: 340px;
+    background: #fff;
+    border: 1px solid rgba(41, 41, 41, 0.08);
+    border-radius: 18px;
+    box-shadow: 0 24px 50px -20px rgba(41, 41, 41, 0.22), 0 4px 12px -4px rgba(41, 41, 41, 0.06);
+    padding: 1.25rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 220ms ease, transform 220ms ease;
+    z-index: 100;
+  }
+  .menu .item.open .contact-panel { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .contact-panel::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    right: 32px;
+    width: 12px; height: 12px;
+    background: #fff;
+    border-left: 1px solid rgba(41, 41, 41, 0.08);
+    border-top: 1px solid rgba(41, 41, 41, 0.08);
+    transform: rotate(45deg);
+  }
+  .contact-eyebrow {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--brand);
+    margin: 0 0 0.85rem 0.25rem;
+    font-weight: 500;
+  }
+  .contact-row {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding: 0.75rem 0.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 180ms ease;
+  }
+  .contact-row + .contact-row { border-top: 1px solid rgba(41, 41, 41, 0.06); }
+  .contact-row:hover { background: rgba(41, 77, 123, 0.04); }
+  .contact-icon {
+    flex: 0 0 36px;
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(41, 77, 123, 0.08);
+    color: var(--brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .contact-icon svg { width: 16px; height: 16px; }
+  .contact-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .contact-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; }
+  .contact-value { font-size: 0.95rem; color: var(--ink); font-weight: 500; line-height: 1.35; }
+  .contact-foot {
+    margin-top: 0.75rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(41, 41, 41, 0.06);
+    display: flex;
+    gap: 0.5rem;
+  }
+  .contact-foot .cta { flex: 1; padding: 0.6rem 1rem; font-size: 0.8125rem; }
+  .contact-foot .cta.outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid rgba(41, 41, 41, 0.18);
+  }
+  .contact-foot .cta.outline:hover { background: rgba(41, 41, 41, 0.04); }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform 220ms ease, background-color 220ms ease;
+  }
+  .cta:hover { transform: scale(1.03); background: #000; }
+  .menu-toggle {
+    display: none;
+    background: #ffffff;
+    border: 1px solid rgba(41, 41, 41, 0.12);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(41, 41, 41, 0.04);
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+  .menu-toggle:hover { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .menu-toggle svg { width: 20px; height: 20px; display: block; }
+  .menu-toggle .icon-close { display: none; }
+  .menu-toggle.is-open { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .menu-toggle.is-open .icon-burger { display: none; }
+  .menu-toggle.is-open .icon-close { display: block; }
+
+  .mobile-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: auto;
+    right: 1rem;
+    width: min(248px, calc(100vw - 2rem));
+    z-index: 60;
+    background: #ffffff;
+    border: 1px solid rgba(41, 41, 41, 0.08);
+    border-radius: 18px;
+    box-shadow: 0 24px 50px -20px rgba(41, 41, 41, 0.22), 0 4px 12px -4px rgba(41, 41, 41, 0.06);
+    padding: 0.75rem;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+  .mobile-menu.is-open { display: block; opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .mobile-menu a, .mobile-menu .mm-cta {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+  .mobile-menu a:hover, .mobile-menu a.active { background: var(--brand); color: #ffffff; }
+  .mobile-menu .mm-divider { height: 1px; background: rgba(41, 41, 41, 0.08); margin: 0.5rem 0.5rem; }
+  .mobile-menu .mm-cta { background: var(--ink); color: #ffffff; justify-content: center; }
+  .mobile-menu .mm-cta:hover { background: #000; }
+
+  @media (max-width: 980px) {
+    .menu { display: none; }
+    .menu-toggle { display: inline-flex; }
+    .nav { position: relative; }
+    .nav > .cta { display: none; }
+  }
+  @media (max-width: 540px) {
+    .brand-mark .wordmark { font-size: 1.35rem; }
+    .brand-mark img { width: 56px; height: 56px; }
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    z-index: 10;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 4rem 2rem 2rem;
+    text-align: center;
+  }
+  .hero-card {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 4rem 2.5rem;
+    max-width: 920px;
+    width: 100%;
+  }
+  .hero-card::before {
+    content: "";
+    position: absolute;
+    inset: -6rem;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 52% 54% at 50% 50%,
+        rgba(245,245,244,0.96) 0%,
+        rgba(245,245,244,0.9) 32%,
+        rgba(245,245,244,0.5) 62%,
+        rgba(245,245,244,0) 84%
+      );
+    pointer-events: none;
+  }
+  .hero-title {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .hero-sub {
+    font-size: 1.0625rem;
+    color: var(--muted);
+    max-width: 640px;
+    margin: 1.25rem auto 0;
+    line-height: 1.6;
+  }
+  .hero-sub em { font-style: italic; color: var(--ink); font-weight: 500; }
+
+  /* Gallery — uniform 3-column grid, no overlap */
+  .gallery {
+    position: relative;
+    z-index: 5;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 6rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .ref-card {
+    background: #fff;
+    border: 1px solid rgba(41, 41, 41, 0.06);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 280ms ease, box-shadow 280ms ease, border-color 280ms ease;
+  }
+  .ref-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 40px -22px rgba(41, 41, 41, 0.18);
+    border-color: rgba(41, 77, 123, 0.18);
+  }
+  .ref-img {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(45deg, rgba(41,41,41,0.04) 0 10px, rgba(41,41,41,0.02) 10px 20px),
+      #ececea;
+  }
+  .ref-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  /* Slight, subtle saturation lift so the Príma Pék photo blends with the grid */
+  .ref-img.prima img {
+    filter: saturate(1.3) contrast(1.04) brightness(1.02);
+  }
+  .ref-body {
+    padding: 1rem 1.15rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .ref-name {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    font-size: 1.22rem;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .ref-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .ref-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    max-width: 100%;
+    color: var(--brand);
+    background: rgba(41, 77, 123, 0.08);
+    border: 1px solid rgba(41, 77, 123, 0.22);
+    padding: 0.32rem 0.72rem;
+    border-radius: 999px;
+  }
+  .ref-badge .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--brand);
+    box-shadow: 0 0 0 3px rgba(41, 77, 123, 0.14);
+  }
+
+  @media (max-width: 980px) {
+    .gallery { grid-template-columns: repeat(2, 1fr); padding: 2.5rem 1.5rem 4rem; }
+    .hero { padding: 3rem 1.5rem 1rem; }
+  }
+  @media (max-width: 560px) {
+    .gallery { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; padding: 2rem 1rem 3.5rem; }
+    .ref-badge { white-space: normal; line-height: 1.25; font-size: 0.66rem; padding: 0.3rem 0.6rem; }
+  }
+
+  /* Footer */
+  .footer {
+    position: relative;
+    z-index: 5;
+    background: var(--ink);
+    color: #d8d8d6;
+    padding: 4rem 0 0;
+  }
+  .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
+    gap: 3rem;
+    padding-bottom: 4rem;
+  }
+  .footer-brand { display: flex; flex-direction: column; gap: 1.25rem; }
+  .footer-brand .mark { display: flex; align-items: center; gap: 0.85rem; }
+  .footer-brand .mark img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+  .footer-brand .mark span {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .footer-brand p {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: #b5b5b3;
+    margin: 0;
+    max-width: 32ch;
+  }
+  .footer-col h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin: 0 0 1.5rem;
+  }
+  .footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .footer-col a {
+    color: #b5b5b3;
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: color 200ms ease;
+  }
+  .footer-col a:hover { color: var(--brand); }
+  .footer-contact .contact-line {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    font-size: 0.9375rem;
+    color: #b5b5b3;
+  }
+  .footer-contact .contact-line a { color: #b5b5b3; text-decoration: none; transition: color 200ms ease; }
+  .footer-contact .contact-line a:hover { color: var(--brand); }
+  .footer-contact .ic {
+    flex: 0 0 18px;
+    width: 18px; height: 18px;
+    margin-top: 2px;
+    color: var(--brand);
+  }
+  .footer-contact .ic svg { width: 18px; height: 18px; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.75rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    font-size: 0.8125rem;
+    color: #888;
+    flex-wrap: wrap;
+  }
+  .footer-bottom .legal { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+  .footer-bottom .legal a { color: #888; text-decoration: none; transition: color 200ms ease; }
+  .footer-bottom .legal a:hover { color: #fff; }
+
+  @media (max-width: 900px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 540px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; padding-bottom: 2.5rem; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  }
+
+  @keyframes fadeRise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .anim { opacity: 0; animation: fadeRise 0.7s ease-out forwards; }
+  .anim.d1 { animation-delay: 0.12s; }
+</style>
+</head>
+<body>
+  <!-- Fixed background image -->
+  <div class="bg-wrap" aria-hidden="true">
+    <img src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_3DzJXCvY9Z0Vven0E1dxs2buL3M%2Fhf_20260522_092401_e6167fc3-4ded-4913-b769-e289a1eaeb04.jpeg&w=1280&q=85" alt="" />
+  </div>
+  <div class="bg-tint" aria-hidden="true"></div>
+
+  <!-- Nav -->
+  <div class="nav-outer">
+    <nav class="nav">
+      <a class="brand-mark" href="index.html">
+        <img src="assets/logo.png" alt="Thury Group Kft. logo" />
+        <span class="wordmark">Thury Group<sup>Kft.</sup></span>
+      </a>
+      <div class="menu">
+        <div class="item"><a href="index.html">Főoldal</a></div>
+        <div class="item active"><a href="portfolio.html">Portfólió</a></div>
+        <div class="item"><a href="gepberles.html">Gépbérlés</a></div>
+        <div class="item"><a href="rolunk.html">Rólunk</a></div>
+        <div class="item" id="contactItem">
+          <button type="button" aria-haspopup="true" aria-expanded="false" id="contactBtn">
+            Kapcsolat
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="contact-panel" role="menu" aria-labelledby="contactBtn">
+            <p class="contact-eyebrow">Vegye fel velünk a kapcsolatot</p>
+            <a class="contact-row" href="tel:+36305693717">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </span>
+              <span class="contact-text">
+                <span class="contact-label">Thury Martin · területi vezető</span>
+                <span class="contact-value">+36 30 569 3717</span>
+              </span>
+            </a>
+            <a class="contact-row" href="tel:+36207765515">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </span>
+              <span class="contact-text">
+                <span class="contact-label">Thury Tamás · ügyvezető</span>
+                <span class="contact-value">+36 20 776 5515</span>
+              </span>
+            </a>
+<a class="contact-row" href="mailto:thurygroup2015kft@gmail.com">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
+              </span>
+              <span class="contact-text">
+                <span class="contact-label">E-mail</span>
+                <span class="contact-value">thurygroup2015kft@gmail.com</span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <a href="ajanlat.html" class="cta">Ajánlatot kérek</a>
+      <button class="menu-toggle" type="button" id="menuToggle" aria-label="Menü megnyitása" aria-expanded="false" aria-controls="mobileMenu">
+        <svg class="icon-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="21" y2="7"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="17" x2="21" y2="17"></line></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+      </button>
+      <div class="mobile-menu" id="mobileMenu" role="menu" aria-label="Mobil menü">
+        <a href="index.html" role="menuitem">Főoldal</a>
+        <a href="portfolio.html" class="active" role="menuitem">Portfólió</a>
+        <a href="gepberles.html" role="menuitem">Gépbérlés</a>
+        <a href="rolunk.html" role="menuitem">Rólunk</a>
+        <a href="#contact" role="menuitem">Kapcsolat</a>
+        <div class="mm-divider"></div>
+        <a href="ajanlat.html" class="mm-cta" role="menuitem">Ajánlatot kérek</a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-card">
+      <h1 class="hero-title serif anim">Néhány referenciánk</h1>
+      <p class="hero-sub anim d1">Számos helyszín, megannyi elégedett partner.</p>
+    </div>
+  </section>
+
+  <!-- References gallery -->
+  <section class="gallery" id="gallery">
+    <div class="ref-card">
+      <div class="ref-img"><img src="assets/ref-ritz-levente-sportcsarnok.png" alt="Ritz Levente Sportcsarnok" /></div>
+      <div class="ref-body">
+        <h3 class="ref-name">Ritz Levente Sportcsarnok</h3>
+        <span class="ref-badge">Sztár Box ideje alatt is</span>
+      </div>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-img"><img src="assets/ref-budapest-oriaskereke.png" alt="Budapest Óriáskereke" /></div>
+      <div class="ref-body">
+        <h3 class="ref-name">Budapest Óriáskereke</h3>
+      </div>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-img"><img src="assets/ref-morgan-stanley-irodahaz.png" alt="Morgan Stanley Irodaház" /></div>
+      <div class="ref-body">
+        <h3 class="ref-name">Morgan Stanley Irodaház</h3>
+        <span class="ref-sub">Éves nagytakarítás</span>
+      </div>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-img"><img src="assets/ref-lorinc-piac.png" alt="Lőrinc Piac" /></div>
+      <div class="ref-body">
+        <h3 class="ref-name">Lőrinc Piac</h3>
+        <span class="ref-sub">Pestszentlőrinc</span>
+      </div>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-img"><img src="assets/ref-lazar-lovaspark.png" alt="Lázár Lovaspark" /></div>
+      <div class="ref-body">
+        <h3 class="ref-name">Lázár Lovaspark</h3>
+        <span class="ref-sub">Domonyvölgy</span>
+      </div>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-img"><img src="assets/ref-kecskemeti-elmenyfurdo.png" alt="Kecskeméti Élményfürdő" /></div>
+      <div class="ref-body">
+        <h3 class="ref-name">Kecskeméti Élményfürdő</h3>
+        <span class="ref-sub">és csúszdapark</span>
+      </div>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-img"><img src="assets/ref-messzi-istvan-sportcsarnok.png" alt="Messzi István Sportcsarnok" /></div>
+      <div class="ref-body">
+        <h3 class="ref-name">Messzi István Sportcsarnok</h3>
+        <span class="ref-sub">Kecskemét</span>
+      </div>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-img prima"><img src="assets/ref-prima-pek-uzem.png" alt="Príma Pék Üzem" /></div>
+      <div class="ref-body">
+        <h3 class="ref-name">Príma Pék Üzem</h3>
+        <span class="ref-sub">és ipari sütöde · Budakalász</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="mark">
+            <img src="assets/logo.png" alt="Thury Group Kft. logo" />
+            <span>Thury Group Kft.</span>
+          </div>
+          <p>Professzionális ipari takarítás 1996 óta. Gyárak, raktárak, csarnokok, üzemek és irodák takarítása, gépbérléssel és légtér-fertőtlenítéssel.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigáció</h4>
+          <ul>
+            <li><a href="index.html">Főoldal</a></li>
+            <li><a href="portfolio.html">Portfólió</a></li>
+            <li><a href="gepberles.html">Gépbérlés</a></li>
+            <li><a href="rolunk.html">Rólunk</a></li>
+            <li><a href="#contact">Kapcsolat</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Szolgáltatások</h4>
+          <ul>
+            <li><a href="index.html#schedule">Ipari takarítás</a></li>
+            <li><a href="gepberles.html">Gépbérlés</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-contact" id="contact">
+          <h4>Kapcsolat</h4>
+<div class="contact-line">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+            <a href="tel:+36305693717">Thury Martin · +36 30 569 3717</a>
+          </div>
+          <div class="contact-line">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+            <a href="tel:+36207765515">Thury Tamás · +36 20 776 5515</a>
+          </div>
+          <div class="contact-line">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg></span>
+            <a href="mailto:thurygroup2015kft@gmail.com">thurygroup2015kft@gmail.com</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Thury Group Kft. Minden jog fenntartva.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      const btn = document.getElementById('menuToggle');
+      const menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+      function close() { btn.classList.remove('is-open'); menu.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); }
+      function open()  { btn.classList.add('is-open');    menu.classList.add('is-open');    btn.setAttribute('aria-expanded', 'true'); }
+      btn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.contains('is-open') ? close() : open(); });
+      document.addEventListener('click', (e) => { if (!menu.contains(e.target) && !btn.contains(e.target)) close(); });
+      menu.addEventListener('click', (e) => { if (e.target.tagName === 'A') close(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+      window.addEventListener('resize', () => { if (window.innerWidth > 980) close(); });
+    })();
+  </script>
+
+  <script>
+    (function() {
+      const item = document.getElementById('contactItem');
+      const btn  = document.getElementById('contactBtn');
+      if (!item || !btn) return;
+      function close() { item.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+      function open()  { item.classList.add('open');    btn.setAttribute('aria-expanded', 'true'); }
+      btn.addEventListener('click', (e) => { e.stopPropagation(); item.classList.contains('open') ? close() : open(); });
+      document.addEventListener('click', (e) => { if (!item.contains(e.target)) close(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+      let hoverTimer;
+      item.addEventListener('mouseenter', () => { clearTimeout(hoverTimer); if (window.matchMedia('(hover: hover)').matches) open(); });
+      item.addEventListener('mouseleave', () => { if (window.matchMedia('(hover: hover)').matches) { hoverTimer = setTimeout(close, 180); } });
+    })();
+  </script>
+</body>
+</html>

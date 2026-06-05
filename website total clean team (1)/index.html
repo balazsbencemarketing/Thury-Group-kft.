@@ -1,0 +1,1409 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thury Group Kft. — Professzionális ipari takarítás</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F5F5F4;
+    --brand: #294D7B;
+    --muted: #888888;
+    --ink: #292929;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .serif { font-family: 'Newsreader', 'Times New Roman', serif; font-weight: 500; }
+  .italic { font-style: italic; font-weight: 500; }
+
+  /* Page container */
+  .page {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: visible;
+    background: transparent;
+  }
+
+  /* Video layer - fixed full-page background */
+  .video-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .video-wrap video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    display: block;
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+  /* Soft warm tint over the video so it sits inside the palette */
+  .video-tint {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: rgba(245, 245, 244, 0.18);
+  }
+  /* Solid color header backdrop — in flow so it scrolls away with the nav */
+  .top-fade { display: none; }
+  .util-bar {
+    background: linear-gradient(to bottom,
+      #ffffff 0%,
+      #ffffff 70%,
+      var(--bg) 100%
+    );
+  }
+  .nav-outer { background: var(--bg); border-bottom: 1px solid rgba(41, 41, 41, 0.07); }
+
+  /* Utility bar - light, sits over top-fade */
+  .util-bar {
+    position: relative;
+    z-index: 51;
+    background: transparent;
+    color: var(--ink);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+  }
+  .util-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.65rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(41, 41, 41, 0.07);
+  }
+  .util-left, .util-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .util-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+  .util-item:hover { color: var(--brand); }
+  .util-item svg { width: 13px; height: 13px; opacity: 0.85; }
+  .util-divider { width: 1px; height: 14px; background: rgba(41, 41, 41, 0.12); }
+  .util-right .accent { color: var(--brand); font-weight: 500; }
+
+  /* Nav - transparent, sits over top-fade */
+  .nav-outer {
+    position: relative;
+    z-index: 50;
+    background: transparent;
+    border-bottom: none;
+  }
+  .nav {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    gap: 2rem;
+  }
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--ink);
+    padding: 0.3rem 1.1rem 0.3rem 0.35rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(41, 41, 41, 0.06);
+  }
+  .brand-mark img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+  .brand-mark .wordmark {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .brand-mark .wordmark sup {
+    font-size: 0.55em;
+    font-family: 'Inter', sans-serif;
+    vertical-align: super;
+    color: var(--ink);
+    margin-left: 2px;
+  }
+  .menu {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #ffffff;
+    border: 1px solid rgba(41, 41, 41, 0.08);
+    border-radius: 999px;
+    padding: 0.35rem;
+    box-shadow: 0 1px 2px rgba(41, 41, 41, 0.04);
+  }
+  .menu .item {
+    position: relative;
+  }
+  .menu .item > a, .menu .item > button {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    padding: 0.55rem 1.1rem;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: color 220ms ease, background-color 220ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+  }
+  .menu .item > a:hover,
+  .menu .item > button:hover,
+  .menu .item.active > a,
+  .menu .item.open > button {
+    background: var(--brand);
+    color: #ffffff;
+  }
+  .menu .item > button .chev {
+    width: 11px; height: 11px;
+    transition: transform 200ms ease;
+  }
+  .menu .item.open > button .chev { transform: rotate(180deg); }
+
+  /* Contact dropdown */
+  .contact-panel {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: -16px;
+    width: 340px;
+    background: #fff;
+    border: 1px solid rgba(41, 41, 41, 0.08);
+    border-radius: 18px;
+    box-shadow: 0 24px 50px -20px rgba(41, 41, 41, 0.22), 0 4px 12px -4px rgba(41, 41, 41, 0.06);
+    padding: 1.25rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+  .menu .item.open .contact-panel {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .contact-panel::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    right: 32px;
+    width: 12px; height: 12px;
+    background: #fff;
+    border-left: 1px solid rgba(41, 41, 41, 0.08);
+    border-top: 1px solid rgba(41, 41, 41, 0.08);
+    transform: rotate(45deg);
+  }
+  .contact-eyebrow {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--brand);
+    margin: 0 0 0.85rem 0.25rem;
+    font-weight: 500;
+  }
+  .contact-row {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding: 0.75rem 0.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 180ms ease;
+  }
+  .contact-row + .contact-row { border-top: 1px solid rgba(41, 41, 41, 0.06); }
+  .contact-row:hover { background: rgba(41, 77, 123, 0.04); }
+  .contact-icon {
+    flex: 0 0 36px;
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(41, 77, 123, 0.08);
+    color: var(--brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .contact-icon svg { width: 16px; height: 16px; }
+  .contact-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .contact-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .contact-value {
+    font-size: 0.95rem;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+  .contact-foot {
+    margin-top: 0.75rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(41, 41, 41, 0.06);
+    display: flex;
+    gap: 0.5rem;
+  }
+  .contact-foot .cta {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    font-size: 0.8125rem;
+  }
+  .contact-foot .cta.outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid rgba(41, 41, 41, 0.18);
+  }
+  .contact-foot .cta.outline:hover { background: rgba(41, 41, 41, 0.04); }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 220ms ease, background-color 220ms ease;
+  }
+  .cta:hover { transform: scale(1.03); background: #000; }
+  .cta.brand { background: var(--brand); }
+  .cta.brand:hover { background: #1B3357; }
+
+  /* Hero */
+  .hero-wrap { position: relative; z-index: 10; }
+  .hero {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-top: 4rem;
+    padding-bottom: 8rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  /* White vignette card behind hero text */
+  .hero-card {
+    position: relative;
+    isolation: isolate;
+    padding: 5rem 5rem 5.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .hero-card::before {
+    content: "";
+    position: absolute;
+    inset: -6rem;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 52% 54% at 50% 50%, rgba(245,245,244,0.96) 0%, rgba(245,245,244,0.9) 32%, rgba(245,245,244,0.5) 62%, rgba(245,245,244,0) 84%);
+    pointer-events: none;
+  }
+  .headline {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    color: var(--ink);
+    font-size: clamp(2.75rem, 8vw, 7rem);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    max-width: 1100px;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .headline .muted { color: var(--muted); font-style: italic; font-weight: 500; }
+  .description {
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    color: var(--muted);
+    max-width: 640px;
+    margin: 2rem 0 0;
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 3rem;
+    padding: 1.125rem 3.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 240ms ease, background-color 240ms ease, box-shadow 240ms ease;
+    box-shadow: 0 8px 30px -10px rgba(41, 77, 123, 0.45);
+  }
+  .hero-cta:hover { transform: scale(1.03); background: #1B3357; }
+  .hero-cta svg { width: 16px; height: 16px; }
+
+  /* Trust strip below hero */
+  .trust {
+    position: relative;
+    z-index: 10;
+    max-width: 1280px;
+    margin: -4rem auto 0;
+    padding: 2.25rem 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    background: #ffffff;
+    border: 1px solid rgba(41, 41, 41, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 12px 40px -24px rgba(41, 41, 41, 0.18);
+  }
+  .trust .item { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+  .trust .item.center { align-items: center; text-align: center; }
+  .trust .item.right { align-items: flex-end; text-align: right; }
+  .trust .item .num {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    font-size: 2.25rem;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+  }
+  .trust .item .num .accent { color: var(--brand); }
+  .trust .item .label {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* Animations */
+  @keyframes fadeRise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .anim { opacity: 0; animation: fadeRise 0.8s ease-out forwards; }
+  .anim.d1 { animation-delay: 0.2s; }
+  .anim.d2 { animation-delay: 0.4s; }
+  .anim.d3 { animation-delay: 0.6s; }
+  .anim.d4 { animation-delay: 0.15s; }
+
+  /* tiny eyebrow above headline */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 1.75rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgba(41, 77, 123, 0.2);
+    border-radius: 999px;
+    background: rgba(245, 245, 244, 0.6);
+    backdrop-filter: blur(4px);
+  }
+  .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--brand);
+    box-shadow: 0 0 0 4px rgba(41, 77, 123, 0.12);
+  }
+
+  /* Mobile menu trigger — icon-only burger */
+  .menu-toggle {
+    display: none;
+    background: #ffffff;
+    border: 1px solid rgba(41, 41, 41, 0.12);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(41, 41, 41, 0.04);
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+  .menu-toggle:hover { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .menu-toggle svg { width: 20px; height: 20px; display: block; }
+  .menu-toggle .icon-close { display: none; }
+  .menu-toggle.is-open { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .menu-toggle.is-open .icon-burger { display: none; }
+  .menu-toggle.is-open .icon-close { display: block; }
+
+  /* Mobile dropdown panel */
+  .mobile-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: auto;
+    right: 1rem;
+    width: min(248px, calc(100vw - 2rem));
+    z-index: 60;
+    background: #ffffff;
+    border: 1px solid rgba(41, 41, 41, 0.08);
+    border-radius: 18px;
+    box-shadow: 0 24px 50px -20px rgba(41, 41, 41, 0.22), 0 4px 12px -4px rgba(41, 41, 41, 0.06);
+    padding: 0.75rem;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+  .mobile-menu.is-open {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .mobile-menu a, .mobile-menu .mm-cta {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+  .mobile-menu a:hover, .mobile-menu a.active {
+    background: var(--brand);
+    color: #ffffff;
+  }
+  .mobile-menu .mm-divider {
+    height: 1px;
+    background: rgba(41, 41, 41, 0.08);
+    margin: 0.5rem 0.5rem;
+  }
+  .mobile-menu .mm-cta {
+    background: var(--ink);
+    color: #ffffff;
+    justify-content: center;
+  }
+  .mobile-menu .mm-cta:hover { background: #000; }
+
+  @media (max-width: 980px) {
+    .menu { display: none; }
+    .menu-toggle { display: inline-flex; }
+    .nav { position: relative; }
+    .nav > .cta { display: none; }
+    .util-right { display: none; }
+    .trust { grid-template-columns: repeat(3, 1fr); padding: 1.75rem 1.25rem; gap: 1rem; }
+    .hero { padding-bottom: 6rem; }
+    .util-inner { justify-content: center; }
+  }
+  @media (max-width: 540px) {
+    .util-left { gap: 0.85rem; font-size: 0.72rem; }
+    .util-divider { display: none; }
+    .brand-mark .wordmark { font-size: 1.35rem; }
+    .brand-mark img { width: 56px; height: 56px; }
+    .trust { padding: 1.5rem 1.1rem; gap: 0.65rem; margin-top: -2.5rem; }
+    .trust .item .num { font-size: 1.65rem; }
+    .trust .item .label { font-size: 0.66rem; letter-spacing: 0.08em; }
+  }
+
+  /* Selected projects - transparent so video shows behind cards */
+  .section {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+  }
+  .projects {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 8rem 2rem 6rem;
+  }
+  .projects-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 3.5rem;
+  }
+  .projects-title {
+    position: relative;
+    isolation: isolate;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 0;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .projects-title::before {
+    content: "";
+    position: absolute;
+    inset: -4rem -6rem;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 50% 55% at 50% 50%,
+        rgba(245,245,244,0.96) 0%,
+        rgba(245,245,244,0.9) 20%,
+        rgba(245,245,244,0.7) 40%,
+        rgba(245,245,244,0.4) 60%,
+        rgba(245,245,244,0.15) 80%,
+        rgba(245,245,244,0) 100%
+      );
+    pointer-events: none;
+  }
+  .see-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: transform 220ms ease, background-color 220ms ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .see-all:hover { transform: scale(1.03); background: #000; }
+  .see-all svg { width: 14px; height: 14px; }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    background: #fff;
+    border: 1px solid rgba(41, 41, 41, 0.06);
+    border-radius: 16px;
+    padding: 0.85rem 0.85rem 1.25rem;
+    transition: transform 280ms ease, box-shadow 280ms ease, border-color 280ms ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 40px -22px rgba(41, 41, 41, 0.18);
+    border-color: rgba(41, 77, 123, 0.18);
+  }
+  .project-image {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(45deg, rgba(41,41,41,0.04) 0 10px, rgba(41,41,41,0.02) 10px 20px),
+      #ececea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(41,41,41,0.35);
+    font-family: ui-monospace, 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .project-meta .name {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .project-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0 0.4rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+    flex-wrap: wrap;
+  }
+  .project-meta span + span {
+    position: relative;
+    padding-left: 0.85rem;
+  }
+  .project-meta span + span::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--muted);
+    opacity: 0.55;
+    transform: translateY(-50%);
+  }
+
+  @media (max-width: 980px) {
+    .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    .projects { padding: 5rem 1.5rem 4rem; }
+    .projects-head { flex-direction: column; align-items: flex-start; gap: 1.5rem; margin-bottom: 2.5rem; }
+  }
+  @media (max-width: 560px) {
+    .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+    .projects { padding: 4rem 1rem 3.5rem; }
+  }
+
+  /* Footer */
+  .footer {
+    position: relative;
+    z-index: 5;
+    background: var(--ink);
+    color: #d8d8d6;
+    padding: 5rem 0 0;
+    margin-top: 4rem;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
+    gap: 3rem;
+    padding-bottom: 4rem;
+  }
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .footer-brand .mark {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .footer-brand .mark img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+  .footer-brand .mark span {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .footer-brand p {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: #b5b5b3;
+    margin: 0;
+    max-width: 32ch;
+  }
+  .footer-socials {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+  }
+  .footer-socials a {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d8d8d6;
+    text-decoration: none;
+    transition: background-color 220ms ease, color 220ms ease;
+  }
+  .footer-socials a:hover {
+    background: var(--brand);
+    color: #fff;
+  }
+  .footer-socials svg { width: 16px; height: 16px; }
+
+  .footer-col h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin: 0 0 1.5rem;
+  }
+  .footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .footer-col a {
+    color: #b5b5b3;
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: color 200ms ease;
+  }
+  .footer-col a:hover { color: var(--brand); }
+
+  .footer-contact .contact-line {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    font-size: 0.9375rem;
+    color: #b5b5b3;
+  }
+  .footer-contact .contact-line a {
+    color: #b5b5b3;
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+  .footer-contact .contact-line a:hover { color: var(--brand); }
+  .footer-contact .ic {
+    flex: 0 0 18px;
+    width: 18px; height: 18px;
+    margin-top: 2px;
+    color: var(--brand);
+  }
+  .footer-contact .ic svg { width: 18px; height: 18px; }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.75rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    font-size: 0.8125rem;
+    color: #888888;
+    flex-wrap: wrap;
+  }
+  .footer-bottom .legal {
+    display: flex;
+    gap: 1.75rem;
+    flex-wrap: wrap;
+  }
+  .footer-bottom .legal a {
+    color: #888888;
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+  .footer-bottom .legal a:hover { color: #fff; }
+
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 540px) {
+    .footer { padding-top: 3.5rem; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; padding-bottom: 2.5rem; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  }
+
+  /* Services */
+  .services {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 7rem 2rem 4rem;
+  }
+  .services-head {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+    max-width: 720px;
+    padding: 2rem 2.5rem 2.25rem;
+  }
+  .services-head::before {
+    content: "";
+    position: absolute;
+    inset: -6rem -10rem;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 50% 55% at 50% 50%,
+        rgba(245,245,244,0.96) 0%,
+        rgba(245,245,244,0.9) 20%,
+        rgba(245,245,244,0.7) 40%,
+        rgba(245,245,244,0.4) 60%,
+        rgba(245,245,244,0.15) 80%,
+        rgba(245,245,244,0) 100%
+      );
+    pointer-events: none;
+  }
+  .services-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brand);
+    font-weight: 500;
+  }
+  .services-title {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .services-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 56ch;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .service-card {
+    position: relative;
+    background: #fff;
+    border: 1px solid rgba(41, 41, 41, 0.07);
+    border-radius: 18px;
+    padding: 2rem 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    transition: transform 280ms ease, box-shadow 280ms ease, border-color 280ms ease;
+  }
+  .service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 40px -22px rgba(41, 41, 41, 0.18);
+    border-color: rgba(41, 77, 123, 0.18);
+  }
+  .service-num {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--brand);
+    letter-spacing: 0.04em;
+  }
+  .service-title {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 1.75rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .service-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .service-cta {
+    align-self: flex-start;
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: transform 220ms ease, background-color 220ms ease;
+  }
+  .service-cta:hover { transform: scale(1.03); background: var(--brand); }
+  .service-cta.brand { background: var(--brand); }
+  .service-cta.brand:hover { background: #1B3357; }
+  .service-cta svg { width: 14px; height: 14px; }
+
+  @media (max-width: 760px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .services { padding: 5rem 1.5rem 3rem; }
+    .service-card { padding: 1.5rem 1.5rem 1.25rem; }
+    .service-title { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <!-- Video background (fixed, full page) -->
+    <div class="video-wrap" aria-hidden="true">
+      <video id="bgVideo" muted playsinline preload="auto" disablepictureinpicture>
+        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_3DzJXCvY9Z0Vven0E1dxs2buL3M/hf_20260520_133114_11c5d836-6b61-45cc-9c55-82241e07743f.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="video-tint" aria-hidden="true"></div>
+    <div class="top-fade" aria-hidden="true"></div>
+
+    <!-- Nav -->
+    <div class="nav-outer">
+      <nav class="nav">
+        <a class="brand-mark" href="#home">
+          <img src="assets/logo.png" alt="Thury Group Kft. logo" />
+          <span class="wordmark">Thury Group<sup>Kft.</sup></span>
+        </a>
+        <div class="menu" id="mainMenu">
+          <div class="item active"><a href="#home">Főoldal</a></div>
+          <div class="item"><a href="portfolio.html">Portfólió</a></div>
+          <div class="item"><a href="gepberles.html">Gépbérlés</a></div>
+          <div class="item"><a href="rolunk.html">Rólunk</a></div>
+          <div class="item" id="contactItem">
+            <button type="button" aria-haspopup="true" aria-expanded="false" id="contactBtn">
+              Kapcsolat
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="contact-panel" role="menu" aria-labelledby="contactBtn">
+              <p class="contact-eyebrow">Vegye fel velünk a kapcsolatot</p>
+<a class="contact-row" href="tel:+36305693717">
+                <span class="contact-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                </span>
+                <span class="contact-text">
+                  <span class="contact-label">Thury Martin · területi vezető</span>
+                  <span class="contact-value">+36 30 569 3717</span>
+                </span>
+              </a>
+              <a class="contact-row" href="tel:+36207765515">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </span>
+              <span class="contact-text">
+                <span class="contact-label">Thury Tamás · ügyvezető</span>
+                <span class="contact-value">+36 20 776 5515</span>
+              </span>
+            </a>
+<a class="contact-row" href="mailto:thurygroup2015kft@gmail.com">
+                <span class="contact-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
+                </span>
+                <span class="contact-text">
+                  <span class="contact-label">E-mail</span>
+                  <span class="contact-value">thurygroup2015kft@gmail.com</span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <a href="ajanlat.html" class="cta">Ajánlatot kérek</a>
+        <button class="menu-toggle" type="button" id="menuToggle" aria-label="Menü megnyitása" aria-expanded="false" aria-controls="mobileMenu">
+          <svg class="icon-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="21" y2="7"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="17" x2="21" y2="17"></line></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+        </button>
+        <div class="mobile-menu" id="mobileMenu" role="menu" aria-label="Mobil menü">
+          <a href="#home" class="active" role="menuitem">Főoldal</a>
+          <a href="portfolio.html" role="menuitem">Portfólió</a>
+          <a href="gepberles.html" role="menuitem">Gépbérlés</a>
+          <a href="rolunk.html" role="menuitem">Rólunk</a>
+          <a href="#contact" role="menuitem">Kapcsolat</a>
+          <div class="mm-divider"></div>
+          <a href="ajanlat.html" class="mm-cta" role="menuitem">Ajánlatot kérek</a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero-wrap">
+      <section class="hero" id="home">
+        <div class="hero-card" style="padding: clamp(1.75rem, 4vw, 32px) clamp(1.25rem, 5vw, 64px) clamp(2rem, 4vw, 40px)">
+        <h1 class="headline serif anim" style="max-width: 950px; width: 100%">Rendezett terek, tapasztalt csapattal.</h1>
+        <p class="description anim d1">A Thury Group Kft. 1996 óta vállal professzionális takarítást gyárakban, raktárakban, csarnokokban, üzemekben és irodákban. Tapasztalt csapattal és saját eszközállománnyal dolgozunk, megbízható minőségben.</p>
+        <a href="ajanlat.html" class="hero-cta anim d2">Ajánlatot kérek</a>
+        </div>
+      </section>
+
+      <div class="trust anim d3">
+        <div class="item">
+          <span class="num">30<span class="accent">+</span></span>
+          <span class="label">Év tapasztalat</span>
+        </div>
+        <div class="item center">
+          <span class="num">1996<span class="accent">.</span></span>
+          <span class="label">Óta a piacon</span>
+        </div>
+        <div class="item right">
+          <span class="num">100<span class="accent">%</span></span>
+          <span class="label">Minőségi garancia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section class="section" id="schedule">
+    <div class="services">
+      <div class="services-head">
+        <span class="services-eyebrow">Szolgáltatásaink</span>
+        <h2 class="services-title">Ipari takarítás nagy területekre.</h2>
+        <p class="services-sub">Több évtizedes tapasztalattal vállalunk takarítási feladatokat gyárakban, raktárakban, csarnokokban, üzemekben, irodákban és más nagyobb létesítményekben. Igény esetén saját tisztítógépeinkkel és gyakorlott csapatunkkal dolgozunk.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-num">Ipari takarítás</span>
+          <h3 class="service-title">Gyárak, raktárak, csarnokok és irodák takarítása</h3>
+          <p class="service-desc">Nagyobb ipari és céges területek alapos takarítása tapasztalt csapattal, akár napi takarításra, nagytakarításra vagy padlófelületek mélytisztítására.</p>
+          <a href="ajanlat.html" class="service-cta">
+            Ajánlatot kérek
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </a>
+        </div>
+        <div class="service-card">
+          <span class="service-num">Gépbérlés</span>
+          <h3 class="service-title">Professzionális tisztítógépek bérlése</h3>
+          <p class="service-desc">Ipari súrológépek, kompakt tisztítógépek és egyéb takarítógépek bérelhetők rövid vagy hosszabb időre, igény szerint egyeztetéssel.</p>
+          <a href="gepberles.html" class="service-cta">
+            Gépek megtekintése
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Selected projects -->
+  <section class="section" id="projects">
+    <div class="projects">
+      <div class="projects-head">
+        <h2 class="projects-title">Korábbi munkáink</h2>
+        <a href="portfolio.html" class="see-all">Portfólió megtekintése</a>
+      </div>
+      <div class="projects-grid" id="projectsGrid">
+        <a href="portfolio.html" class="project-card">
+          <div class="project-image"><img src="assets/ref-ritz-levente-sportcsarnok.png" alt="Ritz Levente Sportcsarnok" /></div>
+          <div class="project-meta"><span class="name">Ritz Levente Sportcsarnok</span></div>
+        </a>
+        <a href="portfolio.html" class="project-card">
+          <div class="project-image"><img src="assets/ref-budapest-oriaskereke.png" alt="Budapest Óriáskereke" /></div>
+          <div class="project-meta"><span class="name">Budapest Óriáskereke</span></div>
+        </a>
+        <a href="portfolio.html" class="project-card">
+          <div class="project-image"><img src="assets/ref-morgan-stanley-irodahaz.png" alt="Morgan Stanley Irodaház" /></div>
+          <div class="project-meta"><span class="name">Morgan Stanley Irodaház</span></div>
+        </a>
+        <a href="portfolio.html" class="project-card">
+          <div class="project-image"><img src="assets/ref-kecskemeti-elmenyfurdo.png" alt="Kecskeméti Élményfürdő" /></div>
+          <div class="project-meta"><span class="name">Kecskeméti Élményfürdő</span></div>
+        </a>
+        <a href="portfolio.html" class="project-card">
+          <div class="project-image"><img src="assets/ref-lazar-lovaspark.png" alt="Lázár Lovaspark" /></div>
+          <div class="project-meta"><span class="name">Lázár Lovaspark</span></div>
+        </a>
+        <a href="portfolio.html" class="project-card">
+          <div class="project-image"><img src="assets/ref-messzi-istvan-sportcsarnok.png" alt="Messzi István Sportcsarnok" /></div>
+          <div class="project-meta"><span class="name">Messzi István Sportcsarnok</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="mark">
+            <img src="assets/logo.png" alt="Thury Group Kft. logo" />
+            <span>Thury Group Kft.</span>
+          </div>
+          <p>Professzionális ipari takarítás 1996 óta. Gyárak, raktárak, csarnokok, üzemek és irodák takarítása, igény szerint gépbérléssel.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigáció</h4>
+          <ul>
+            <li><a href="#home">Főoldal</a></li>
+            <li><a href="#schedule">Szolgáltatások</a></li>
+            <li><a href="portfolio.html">Portfólió</a></li>
+            <li><a href="gepberles.html">Gépbérlés</a></li>
+            <li><a href="rolunk.html">Rólunk</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Szolgáltatások</h4>
+          <ul>
+            <li><a href="#schedule">Ipari takarítás</a></li>
+            <li><a href="gepberles.html">Gépbérlés</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col footer-contact" id="contact">
+          <h4>Kapcsolat</h4>
+<div class="contact-line">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+            <a href="tel:+36305693717">Thury Martin · +36 30 569 3717</a>
+          </div>
+          <div class="contact-line">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+            <a href="tel:+36207765515">Thury Tamás · +36 20 776 5515</a>
+          </div>
+          <div class="contact-line">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg></span>
+            <a href="mailto:thurygroup2015kft@gmail.com">thurygroup2015kft@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Thury Group Kft. Minden jog fenntartva.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    (function() {
+      const btn = document.getElementById('menuToggle');
+      const menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+      function close() {
+        btn.classList.remove('is-open');
+        menu.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+      function open() {
+        btn.classList.add('is-open');
+        menu.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu.classList.contains('is-open') ? close() : open();
+      });
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) close();
+      });
+      menu.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 980) close();
+      });
+    })();
+  </script>
+
+  <script>
+    // Contact dropdown toggle
+    (function() {
+      const item = document.getElementById('contactItem');
+      const btn  = document.getElementById('contactBtn');
+      if (!item || !btn) return;
+      function close() {
+        item.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+      function open() {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        item.classList.contains('open') ? close() : open();
+      });
+      document.addEventListener('click', (e) => {
+        if (!item.contains(e.target)) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+      // Hover open on desktop
+      let hoverTimer;
+      item.addEventListener('mouseenter', () => {
+        clearTimeout(hoverTimer);
+        if (window.matchMedia('(hover: hover)').matches) open();
+      });
+      item.addEventListener('mouseleave', () => {
+        if (window.matchMedia('(hover: hover)').matches) {
+          hoverTimer = setTimeout(close, 180);
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    // Scroll-tied video — uses *forward playback* (smooth) with variable rate
+    // instead of frame-precise seeking. H.264 seek-decoding gets slower the
+    // further into the video you go because of keyframe spacing; forward
+    // playback always streams smoothly. We only fall back to a seek when the
+    // user scrolls upward (i.e. wants to go backward), since the video can't
+    // play in reverse.
+    (function() {
+      const video = document.getElementById('bgVideo');
+      if (!video) return;
+
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+
+      // --- Scroll-tied playback on ALL devices (desktop + phone + tablet) -
+      // The frame shown tracks scroll position everywhere. Phones used to get
+      // a plain autoplay loop, but we now run the exact same scroll logic as
+      // desktop. The only extra step phones need is a one-time "unlock": iOS
+      // and Android require a user gesture before the first programmatic
+      // play()/currentTime write is honoured, so we authorise the element on
+      // the first touch/scroll/click. After that it behaves like desktop.
+      video.loop = false;
+      video.removeAttribute('loop');
+      video.removeAttribute('autoplay');
+      video.style.opacity = '1';
+
+      let unlocked = false;
+      function unlock() {
+        if (unlocked) return;
+        unlocked = true;
+        // A muted play()/pause() pair performed inside a real user gesture
+        // authorises later programmatic play() and currentTime seeks.
+        const p = video.play();
+        if (p && p.then) p.then(() => { if (!start.done) video.pause(); }).catch(() => {});
+        else { try { if (!start.done) video.pause(); } catch (e) {} }
+      }
+      ['touchstart', 'touchmove', 'pointerdown', 'click', 'wheel'].forEach((ev) =>
+        window.addEventListener(ev, unlock, { once: true, passive: true })
+      );
+
+      let duration = 0;
+      let target = 0;
+      let pendingSeek = false;
+
+      function computeTarget() {
+        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const progress = Math.min(1, Math.max(0, window.scrollY / max));
+        target = progress * duration;
+      }
+
+      function tick() {
+        if (duration > 0 && !pendingSeek) {
+          const diff = target - video.currentTime;
+
+          if (diff > 0.04) {
+            // Need to move forward — keep video playing, scale rate by distance.
+            // 1× when 50ms behind, up to 16× when 4s+ behind. Smooth forward
+            // playback never triggers a keyframe re-decode.
+            const rate = Math.min(16, 1 + diff * 4);
+            if (Math.abs(video.playbackRate - rate) > 0.05) video.playbackRate = rate;
+            if (video.paused) video.play().catch(() => {});
+          } else if (diff < -0.25) {
+            // Need to move backward — must seek (this is the only point where
+            // the slow path runs, but it happens once per scroll-up, not per frame).
+            if (!video.paused) video.pause();
+            pendingSeek = true;
+            try { video.currentTime = Math.max(0, target); } catch (e) { pendingSeek = false; }
+          } else {
+            // Caught up. Pause to keep frame stable.
+            if (!video.paused) video.pause();
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+
+      video.addEventListener('seeked', () => { pendingSeek = false; });
+
+      function start() {
+        if (start.done) return;
+        start.done = true;
+        duration = video.duration || 0;
+        computeTarget();
+        try { video.currentTime = target; } catch (e) {}
+        requestAnimationFrame(tick);
+      }
+
+      video.addEventListener('loadedmetadata', start);
+      video.addEventListener('loadeddata', start);
+      video.addEventListener('canplay', start);
+
+      if (video.readyState >= 1 && (video.duration || 0) > 0) start();
+      else { try { video.load(); } catch (e) {} }
+
+      window.addEventListener('scroll', computeTarget, { passive: true });
+      window.addEventListener('resize', computeTarget);
+      computeTarget();
+    })();
+  </script>
+</body>
+</html>
